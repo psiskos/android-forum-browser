@@ -1,36 +1,46 @@
 package android.pms.unipi.androidforumbrowser;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+{
+    //static TextView testTextView;
+    static String forumData;
+    static ArrayList<String> listItems=new ArrayList<String>();
+    ArrayAdapter<String> adapter;
+    static ListView forumsListView;
+    static String url = "http://192.168.1.10/phpbb/fetch.php";
 
-    ProgressDialog pd;
-    TextView txtJson;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        txtJson = (TextView)findViewById(R.id.jsaonTextView);
-        new JsonTask().execute("http://192.168.1.10/phpbb/fetch.php");
+        forumsListView = (ListView)findViewById(R.id.forums_listview);
+        //testTextView = (TextView)findViewById(R.id.testTextview);
+        new JsonTask().execute(url);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
+        forumsListView.setAdapter(adapter);
     }
+
+   static public void stringToListView(String input,ArrayList<String> list)
+    {
+        input =  input.replace("[","");
+        input =  input.replace("]","");
+        input =  input.replace("\"","");
+        String[] test = input.split(",");
+        for (int i = 0; i < test.length; i++)
+            list.add(test[i]);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -53,73 +63,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class JsonTask extends AsyncTask<String, String, String> {
 
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            pd = new ProgressDialog(MainActivity.this);
-            pd.setMessage("Please wait");
-            pd.setCancelable(false);
-            pd.show();
-        }
-
-        protected String doInBackground(String... params) {
-
-
-            HttpURLConnection connection = null;
-            BufferedReader reader = null;
-
-            try {
-                URL url = new URL(params[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
-
-
-                InputStream stream = connection.getInputStream();
-
-                reader = new BufferedReader(new InputStreamReader(stream));
-
-                StringBuffer buffer = new StringBuffer();
-                String line = "";
-
-                while ((line = reader.readLine()) != null) {
-                    buffer.append(line+"\n");
-                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
-
-                }
-
-                return buffer.toString();
-
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
-                try {
-                    if (reader != null) {
-                        reader.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            if (pd.isShowing()){
-                pd.dismiss();
-            }
-            txtJson.setText(result);
-        }
-    }
 
 
 }

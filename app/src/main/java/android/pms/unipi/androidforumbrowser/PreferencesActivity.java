@@ -9,9 +9,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import static android.pms.unipi.androidforumbrowser.MainActivity.url;
+
 public class PreferencesActivity extends AppCompatActivity
 {
-    public static String forumUrl = "http://androidforum.com";
     public static int numOfTopics=3;
     public static int numOfPosts=5;
 
@@ -46,16 +47,16 @@ public class PreferencesActivity extends AppCompatActivity
 
         save_button = (Button)findViewById(R.id.save_button);
 
-        topics_spinner.setSelection(numOfTopics);
-        posts_spinner.setSelection(numOfPosts);
-        apiUrlEditTextView.setText(forumUrl);
+        topics_spinner.setSelection(numOfTopics-1);
+        posts_spinner.setSelection(numOfPosts-1);
+        apiUrlEditTextView.setText(url);
 
         save_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
-                numOfTopics = topics_spinner.getSelectedItemPosition()-1;
-                numOfPosts = posts_spinner.getSelectedItemPosition()-1;
-                forumUrl = apiUrlEditTextView.getText().toString();
+                numOfTopics = topics_spinner.getSelectedItemPosition()+1;
+                numOfPosts = posts_spinner.getSelectedItemPosition()+1;
+                url = apiUrlEditTextView.getText().toString();
             }
         });
 
