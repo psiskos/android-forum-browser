@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">AndroidForumBrowser</string>
+    <string name="preferences">Preferences</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="register">Register</string>
+    <string name="forum_url">Forum Url: </string>
+    <string name="api_settings">API SETTINGS </string>
+    <string name="display_settings">DISPLAY SETTINGS </string>
+    <string name="posts_per_page">Posts per page:  </string>
+    <string name="topics_per_page">Topics per page:  </string>
+    <string name="save_button">Save</string>
 </resources>
