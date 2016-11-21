@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import static android.pms.unipi.androidforumbrowser.MainActivity.url;
+import static android.pms.unipi.androidforumbrowser.MainActivity.serverUrl;
 
 public class PreferencesActivity extends AppCompatActivity
 {
@@ -49,14 +49,14 @@ public class PreferencesActivity extends AppCompatActivity
 
         topics_spinner.setSelection(numOfTopics-1);
         posts_spinner.setSelection(numOfPosts-1);
-        apiUrlEditTextView.setText(url);
+        apiUrlEditTextView.setText(serverUrl);
 
         save_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
                 numOfTopics = topics_spinner.getSelectedItemPosition()+1;
                 numOfPosts = posts_spinner.getSelectedItemPosition()+1;
-                url = apiUrlEditTextView.getText().toString();
+                serverUrl = apiUrlEditTextView.getText().toString();
             }
         });
 

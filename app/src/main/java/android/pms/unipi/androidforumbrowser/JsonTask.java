@@ -33,8 +33,6 @@ public class JsonTask extends AsyncTask<String, String, String>
             URL url = new URL(params[0]);
             connection = (HttpURLConnection) url.openConnection();
             connection.connect();
-
-
             InputStream stream = connection.getInputStream();
             reader = new BufferedReader(new InputStreamReader(stream));
 
