@@ -3,21 +3,26 @@ package android.pms.unipi.androidforumbrowser;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONObject;
+
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static android.pms.unipi.androidforumbrowser.MainActivity.adapterMain;
-import static android.pms.unipi.androidforumbrowser.MainActivity.listItems;
 import static android.pms.unipi.androidforumbrowser.MainActivity.stringToListView;
+import static android.pms.unipi.androidforumbrowser.TopicsActivity.adapterTopics;
+import static android.pms.unipi.androidforumbrowser.TopicsActivity.topicsListItems;
 
 
-public class JsonTask extends AsyncTask<String, String, String>
+public class JsonTaskPost extends AsyncTask<String, String, String>
 {
+    String message = null;
 
     protected void onPreExecute() {
         super.onPreExecute();
@@ -29,11 +34,34 @@ public class JsonTask extends AsyncTask<String, String, String>
 
         HttpURLConnection connection = null;
         BufferedReader reader = null;
+        OutputStream outStream = null;
 
         try {
             URL url = new URL(params[0]);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("forum_name", params[1]);
+            message = jsonObject.toString();
+
             connection = (HttpURLConnection) url.openConnection();
-            connection.connect();
+            connection.setReadTimeout( 10000 /*milliseconds*/ );
+            connection.setConnectTimeout( 15000 /* milliseconds */ );
+            connection.setRequestMethod("POST");
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setFixedLengthStreamingMode(message.getBytes().length);
+            connection.setRequestProperty("Content-Type", "application/json;charset=utf-8");
+            //connection.setRequestProperty("X-Requested-With", "XMLHttpRequest");
+
+            //open
+            //connection.connect();
+
+            //setup send
+            outStream = new BufferedOutputStream(connection.getOutputStream());
+            outStream.write(message.getBytes());
+            //clean up
+            outStream.flush();
+
+
             InputStream stream = connection.getInputStream();
             reader = new BufferedReader(new InputStreamReader(stream));
 
@@ -48,7 +76,9 @@ public class JsonTask extends AsyncTask<String, String, String>
             return buffer.toString();
 
 
-        } catch (MalformedURLException e) {
+        } catch (org.json.JSONException e){
+            e.printStackTrace();
+        }catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
@@ -70,8 +100,8 @@ public class JsonTask extends AsyncTask<String, String, String>
     @Override
     protected void onPostExecute(String result) {
         if(result!=null){
-            stringToListView(result,listItems);
-            adapterMain.notifyDataSetChanged();}
+            stringToListView(result,topicsListItems);
+            adapterTopics.notifyDataSetChanged();}
         super.onPostExecute(result);
     }
 }

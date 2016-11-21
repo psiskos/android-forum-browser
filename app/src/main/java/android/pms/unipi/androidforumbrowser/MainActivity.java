@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity
 {
     static ArrayList<String> listItems=new ArrayList<String>();
-    ArrayAdapter<String> adapter;
+    static ArrayAdapter<String> adapterMain;
     ListView forumsListView;
     static String serverUrl = "http://192.168.1.10/phpBB/android_api/";
 
@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         forumsListView = (ListView)findViewById(R.id.forums_listview);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
-        forumsListView.setAdapter(adapter);
+        adapterMain = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
+        forumsListView.setAdapter(adapterMain);
 
         new JsonTask().execute(serverUrl+"fetch_forums.php");
 
@@ -49,19 +49,25 @@ public class MainActivity extends AppCompatActivity
 
    static public void stringToListView(String input,ArrayList<String> list)
     {
+        String phpWarnings = "<br />\n" +
+        "<b>Deprecated</b>:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in <b>Unknown</b> on line <b>0</b><br />\n" +
+        "<br />\n" +
+        "<b>Warning</b>:  Cannot modify header information - headers already sent in <b>Unknown</b> on line <b>0</b><br />";
+        input = input.replace(phpWarnings,"");
         input =  input.replace("[","");
         input =  input.replace("]","");
         input =  input.replace("\"","");
         input = input.replace("\n", "");
         //input = input.replace("<b>","");
-       // input = input.replace("</b>","");
+        //input = input.replace("</b>","");
         //input = input.replace("<br />","");
-
+        list.clear();
         String[] test = input.split(",");
 
-        list.clear();
-        for (int i = 0; i < test.length; i++)
+        for (int i = 0; i < test.length; i++){
             list.add(test[i]);
+            }
+
     }
 
 
