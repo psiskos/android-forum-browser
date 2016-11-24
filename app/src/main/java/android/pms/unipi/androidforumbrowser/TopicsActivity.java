@@ -26,10 +26,12 @@ public class TopicsActivity extends AppCompatActivity
         topicsListView = (ListView)findViewById(R.id.topicsListView);
         adapterTopics = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, topicsListItems);
         topicsListView.setAdapter(adapterTopics);
+
         forum_name = getIntent().getExtras().getString("FORUM_NAME");
         topicsUrl = serverUrl +"fetch_topics.php";
+        String topicsToRequest = Integer.toString(PreferencesActivity.numOfTopics);
 
-        new JsonTaskPost().execute(topicsUrl,forum_name);
+        new JsonTaskPost().execute(topicsUrl,forum_name,topicsToRequest);
     }
 
 }

@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity
     ListView forumsListView;
     static String serverUrl = "http://192.168.1.10/phpBB/android_api/";
 
-
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -49,24 +48,19 @@ public class MainActivity extends AppCompatActivity
 
    static public void stringToListView(String input,ArrayList<String> list)
     {
-        String phpWarnings = "<br />\n" +
-        "<b>Deprecated</b>:  Automatically populating $HTTP_RAW_POST_DATA is deprecated and will be removed in a future version. To avoid this warning set 'always_populate_raw_post_data' to '-1' in php.ini and use the php://input stream instead. in <b>Unknown</b> on line <b>0</b><br />\n" +
-        "<br />\n" +
-        "<b>Warning</b>:  Cannot modify header information - headers already sent in <b>Unknown</b> on line <b>0</b><br />";
-        input = input.replace(phpWarnings,"");
-        input =  input.replace("[","");
-        input =  input.replace("]","");
-        input =  input.replace("\"","");
-        input = input.replace("\n", "");
-        //input = input.replace("<b>","");
-        //input = input.replace("</b>","");
-        //input = input.replace("<br />","");
-        list.clear();
-        String[] test = input.split(",");
+        String find = "<br />";
+        if(input.contains(find))
+            input = input.substring(input.lastIndexOf(find)+find.length());
 
-        for (int i = 0; i < test.length; i++){
+        input = input.replace("\n", "");
+        input =  input.replace("\"","");
+        String[] test = input.split("\\],\\[");
+        test[0] = test[0].replace("[","");
+        test[test.length-1] = test[test.length-1].replace("]","");
+        list.clear();
+
+        for (int i = 0; i < test.length; i++)
             list.add(test[i]);
-            }
 
     }
 

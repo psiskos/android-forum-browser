@@ -69,9 +69,11 @@ public class JsonTask extends AsyncTask<String, String, String>
 
     @Override
     protected void onPostExecute(String result) {
-        if(result!=null){
+        if(result!=null)
+        {
             stringToListView(result,listItems);
-            adapterMain.notifyDataSetChanged();}
+            adapterMain.notifyDataSetChanged();
+        }
         super.onPostExecute(result);
     }
 }

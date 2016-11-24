@@ -40,25 +40,17 @@ public class JsonTaskPost extends AsyncTask<String, String, String>
             URL url = new URL(params[0]);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("forum_name", params[1]);
+            jsonObject.put("number_of_topics", params[2]);
             message = jsonObject.toString();
 
             connection = (HttpURLConnection) url.openConnection();
-            connection.setReadTimeout( 10000 /*milliseconds*/ );
-            connection.setConnectTimeout( 15000 /* milliseconds */ );
-            connection.setRequestMethod("POST");
             connection.setDoInput(true);
             connection.setDoOutput(true);
             connection.setFixedLengthStreamingMode(message.getBytes().length);
             connection.setRequestProperty("Content-Type", "application/json;charset=utf-8");
-            //connection.setRequestProperty("X-Requested-With", "XMLHttpRequest");
 
-            //open
-            //connection.connect();
-
-            //setup send
             outStream = new BufferedOutputStream(connection.getOutputStream());
             outStream.write(message.getBytes());
-            //clean up
             outStream.flush();
 
 
