@@ -51,8 +51,8 @@ public class JsonTaskPost extends AsyncTask<String, String, String>
 
             outStream = new BufferedOutputStream(connection.getOutputStream());
             outStream.write(message.getBytes());
-            outStream.flush();
-
+            //outStream.flush();
+            outStream.close();
 
             InputStream stream = connection.getInputStream();
             reader = new BufferedReader(new InputStreamReader(stream));
