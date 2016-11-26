@@ -15,7 +15,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static android.pms.unipi.androidforumbrowser.MainActivity.POSTS_ACTIVITY;
+import static android.pms.unipi.androidforumbrowser.MainActivity.TOPICS_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.stringToListView;
+import static android.pms.unipi.androidforumbrowser.PostsActivity.adapterPosts;
+import static android.pms.unipi.androidforumbrowser.PostsActivity.postsListItems;
 import static android.pms.unipi.androidforumbrowser.TopicsActivity.adapterTopics;
 import static android.pms.unipi.androidforumbrowser.TopicsActivity.topicsListItems;
 
@@ -23,6 +27,7 @@ import static android.pms.unipi.androidforumbrowser.TopicsActivity.topicsListIte
 public class JsonTaskPost extends AsyncTask<String, String, String>
 {
     String message = null;
+    String callingActivity;
 
     protected void onPreExecute() {
         super.onPreExecute();
@@ -35,12 +40,24 @@ public class JsonTaskPost extends AsyncTask<String, String, String>
         HttpURLConnection connection = null;
         BufferedReader reader = null;
         OutputStream outStream = null;
+        callingActivity = params[3];
 
         try {
             URL url = new URL(params[0]);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("forum_name", params[1]);
             jsonObject.put("number_of_topics", params[2]);
+
+            if(callingActivity.equals(TOPICS_ACTIVITY))
+            {
+                jsonObject.put("forum_name", params[1]);
+                jsonObject.put("number_of_topics", params[2]);
+            }
+            else if(callingActivity.equals(POSTS_ACTIVITY))
+            {
+                jsonObject.put("topic_name", params[1]);
+                jsonObject.put("number_of_posts", params[2]);
+            }
             message = jsonObject.toString();
 
             connection = (HttpURLConnection) url.openConnection();
@@ -91,9 +108,20 @@ public class JsonTaskPost extends AsyncTask<String, String, String>
 
     @Override
     protected void onPostExecute(String result) {
-        if(result!=null){
-            stringToListView(result,topicsListItems);
-            adapterTopics.notifyDataSetChanged();}
+        if(result!=null)
+        {
+            if(callingActivity.equals(TOPICS_ACTIVITY))
+            {
+                stringToListView(result,topicsListItems);
+                adapterTopics.notifyDataSetChanged();
+            }
+            else if(callingActivity.equals(POSTS_ACTIVITY))
+            {
+                stringToListView(result,postsListItems);
+                adapterPosts.notifyDataSetChanged();
+            }
+
+        }
         super.onPostExecute(result);
     }
 }

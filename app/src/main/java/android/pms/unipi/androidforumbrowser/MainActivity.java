@@ -16,6 +16,9 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
 {
+    public static final String TOPICS_ACTIVITY ="TOPICS";
+    public static final String POSTS_ACTIVITY = "POSTS";
+
     static ArrayList<String> listItems=new ArrayList<String>();
     static ArrayAdapter<String> adapterMain;
     ListView forumsListView;

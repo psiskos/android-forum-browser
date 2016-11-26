@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import static android.pms.unipi.androidforumbrowser.MainActivity.TOPICS_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.serverUrl;
 
 
@@ -37,7 +38,7 @@ public class TopicsActivity extends AppCompatActivity
         topicsUrl = serverUrl +"fetch_topics.php";
         String topicsToRequest = Integer.toString(PreferencesActivity.numOfTopics);
 
-        new JsonTaskPost().execute(topicsUrl,forum_name,topicsToRequest);
+        new JsonTaskPost().execute(topicsUrl,forum_name,topicsToRequest,TOPICS_ACTIVITY);
 
         topicsListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
