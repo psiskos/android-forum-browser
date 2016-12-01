@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity
     public static final String TOPICS_ACTIVITY ="TOPICS";
     public static final String POSTS_ACTIVITY = "POSTS";
     public static final String LOGIN_ACTIVITY = "LOGIN";
+    public static final String REGISTER_ACTIVITY = "REGISTER";
     public static SharedPreferences mSharedPrefs;
     public static SharedPreferences.Editor mSharedEditor;
 
@@ -106,10 +107,17 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
                 return true;
             case R.id.logout:
-                mSharedEditor.putString("Username","");
-                mSharedEditor.putBoolean("LoggedIn",false);
-                mSharedEditor.commit();
-                makeToast(this,"Successfully logged out");
+                if(mSharedEditor!= null)
+                {
+                    mSharedEditor.putString("Username", "");
+                    mSharedEditor.putBoolean("LoggedIn", false);
+                    mSharedEditor.commit();
+                }
+                makeToast(this, "Successfully logged out");
+                return true;
+            case R.id.register:
+                intent = new Intent(this, RegisterActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.check_login:
                 if(mSharedPrefs.getBoolean("LoggedIn",false))

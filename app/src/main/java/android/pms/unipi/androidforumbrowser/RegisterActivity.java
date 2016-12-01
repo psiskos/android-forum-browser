@@ -11,36 +11,48 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import static android.pms.unipi.androidforumbrowser.MainActivity.LOGIN_ACTIVITY;
+import static android.pms.unipi.androidforumbrowser.MainActivity.REGISTER_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.mSharedEditor;
 import static android.pms.unipi.androidforumbrowser.MainActivity.mSharedPrefs;
 import static android.pms.unipi.androidforumbrowser.MainActivity.makeToast;
 import static android.pms.unipi.androidforumbrowser.MainActivity.serverUrl;
 
-public class LoginActivity extends AppCompatActivity {
-
-    public static TextView serverMessageTxv;
-    EditText usernameEditTxv,passwordEditTxv;
-    Button loginButton;
-
+public class RegisterActivity extends AppCompatActivity
+{
+    public static TextView registerServerMessageTxv;
+    EditText usernameEditTxv,passwordEditTxv,emailEditTxv;
+    Button registerButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        serverMessageTxv = (TextView)findViewById(R.id.server_message);
+        setContentView(R.layout.activity_register);
+
+        registerServerMessageTxv = (TextView)findViewById(R.id.server_message);
         usernameEditTxv = (EditText)findViewById(R.id.username_edittextview);
         passwordEditTxv = (EditText)findViewById(R.id.password_edittextview);
+        emailEditTxv = (EditText)findViewById(R.id.email_edittextview);
 
-        loginButton = (Button)findViewById(R.id.login_button);
+        registerButton = (Button)findViewById(R.id.register_button);
 
-        loginButton.setOnClickListener(new View.OnClickListener()
+        registerButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v) {
 
-                String url = serverUrl + "login.php";
-                new JsonTaskPost().execute(url,usernameEditTxv.getText().toString(),passwordEditTxv.getText().toString(),LOGIN_ACTIVITY);
+                String url = serverUrl + "register.php";
+                if (usernameEditTxv.getText().toString()!="" && passwordEditTxv.getText().toString()!="")
+                {
+                    new JsonTaskPost().execute(url,usernameEditTxv.getText().toString()
+                            ,passwordEditTxv.getText().toString()
+                            ,REGISTER_ACTIVITY
+                            ,emailEditTxv.getText().toString());
+                }
+                else
+                {
+                    makeToast(RegisterActivity.this,"No empty fields allowed");}
+
             }
         });
     }
@@ -63,6 +75,11 @@ public class LoginActivity extends AppCompatActivity {
                 intent = new Intent(this, PreferencesActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.login:
+                intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
             case R.id.logout:
                 if(mSharedEditor!= null)
                 {
@@ -71,11 +88,6 @@ public class LoginActivity extends AppCompatActivity {
                     mSharedEditor.commit();
                 }
                 makeToast(this, "Successfully logged out");
-                return true;
-            case R.id.register:
-                intent = new Intent(this, RegisterActivity.class);
-                startActivity(intent);
-                finish();
                 return true;
             case R.id.check_login:
                 if(mSharedPrefs.getBoolean("LoggedIn",false))
@@ -87,5 +99,4 @@ public class LoginActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
 }

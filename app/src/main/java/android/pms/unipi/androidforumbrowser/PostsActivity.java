@@ -65,10 +65,17 @@ public class PostsActivity extends AppCompatActivity
                 startActivity(intent);
                 return true;
             case R.id.logout:
-                mSharedEditor.putString("Username","");
-                mSharedEditor.putBoolean("LoggedIn",false);
-                mSharedEditor.commit();
-                makeToast(this,"Successfully logged out");
+                if(mSharedEditor!= null)
+                {
+                    mSharedEditor.putString("Username", "");
+                    mSharedEditor.putBoolean("LoggedIn", false);
+                    mSharedEditor.commit();
+                }
+                makeToast(this, "Successfully logged out");
+                return true;
+            case R.id.register:
+                intent = new Intent(this, RegisterActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.check_login:
                 if(mSharedPrefs.getBoolean("LoggedIn",false))
