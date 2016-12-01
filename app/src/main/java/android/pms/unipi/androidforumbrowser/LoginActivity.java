@@ -7,52 +7,40 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
-import java.util.ArrayList;
-
-import static android.pms.unipi.androidforumbrowser.MainActivity.TOPICS_ACTIVITY;
+import static android.pms.unipi.androidforumbrowser.MainActivity.LOGIN_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.mSharedEditor;
 import static android.pms.unipi.androidforumbrowser.MainActivity.mSharedPrefs;
 import static android.pms.unipi.androidforumbrowser.MainActivity.makeToast;
 import static android.pms.unipi.androidforumbrowser.MainActivity.serverUrl;
 
+public class LoginActivity extends AppCompatActivity {
 
-public class TopicsActivity extends AppCompatActivity
-{
+    public static TextView serverMessageTxv;
+    EditText usernameEditTxv,passwordEditTxv;
+    Button loginButton;
 
-    static ArrayList<String> topicsListItems=new ArrayList<String>();;
-    static ArrayAdapter<String> adapterTopics = null;
-    ListView topicsListView = null;
-    String forum_name;
-    String topicsUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_topics);
+        setContentView(R.layout.activity_login);
+        serverMessageTxv = (TextView)findViewById(R.id.server_message);
+        usernameEditTxv = (EditText)findViewById(R.id.username_edittextview);
+        passwordEditTxv = (EditText)findViewById(R.id.password_edittextview);
 
-        topicsListView = (ListView)findViewById(R.id.topicsListView);
-        adapterTopics = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, topicsListItems);
-        topicsListView.setAdapter(adapterTopics);
+        loginButton = (Button)findViewById(R.id.login_button);
 
-        forum_name = getIntent().getExtras().getString("FORUM_NAME");
-        topicsUrl = serverUrl +"fetch_topics.php";
-        String topicsToRequest = Integer.toString(PreferencesActivity.numOfTopics);
-
-        new JsonTaskPost().execute(topicsUrl,forum_name,topicsToRequest,TOPICS_ACTIVITY);
-
-        topicsListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        loginButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                Intent intent = new Intent(TopicsActivity.this, PostsActivity.class);
-                String message = topicsListView.getItemAtPosition(position).toString();
-                intent.putExtra("TOPIC_NAME", message);
-                startActivity(intent);
+            public void onClick(View v) {
+
+                String url = serverUrl + "login.php";
+                new JsonTaskPost().execute(url,usernameEditTxv.getText().toString(),passwordEditTxv.getText().toString(),LOGIN_ACTIVITY);
             }
         });
     }
@@ -73,10 +61,6 @@ public class TopicsActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.preferences:
                 intent = new Intent(this, PreferencesActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.login:
-                intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.logout:

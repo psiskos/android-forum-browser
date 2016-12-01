@@ -3,6 +3,7 @@ package android.pms.unipi.androidforumbrowser;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -11,6 +12,9 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import static android.pms.unipi.androidforumbrowser.MainActivity.POSTS_ACTIVITY;
+import static android.pms.unipi.androidforumbrowser.MainActivity.mSharedEditor;
+import static android.pms.unipi.androidforumbrowser.MainActivity.mSharedPrefs;
+import static android.pms.unipi.androidforumbrowser.MainActivity.makeToast;
 import static android.pms.unipi.androidforumbrowser.MainActivity.serverUrl;
 
 public class PostsActivity extends AppCompatActivity
@@ -47,12 +51,30 @@ public class PostsActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        Intent intent;
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.preferences:
-                Intent intent = new Intent(this, PreferencesActivity.class);
+                intent = new Intent(this, PreferencesActivity.class);
                 startActivity(intent);
+                return true;
+            case R.id.login:
+                intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.logout:
+                mSharedEditor.putString("Username","");
+                mSharedEditor.putBoolean("LoggedIn",false);
+                mSharedEditor.commit();
+                makeToast(this,"Successfully logged out");
+                return true;
+            case R.id.check_login:
+                if(mSharedPrefs.getBoolean("LoggedIn",false))
+                    Log.d("Response","You are logged in");
+                else
+                    Log.d("Response","No log in");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

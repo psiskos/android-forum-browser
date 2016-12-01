@@ -1,8 +1,11 @@
 package android.pms.unipi.androidforumbrowser;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -18,6 +22,9 @@ public class MainActivity extends AppCompatActivity
 {
     public static final String TOPICS_ACTIVITY ="TOPICS";
     public static final String POSTS_ACTIVITY = "POSTS";
+    public static final String LOGIN_ACTIVITY = "LOGIN";
+    public static SharedPreferences mSharedPrefs;
+    public static SharedPreferences.Editor mSharedEditor;
 
     static ArrayList<String> listItems=new ArrayList<String>();
     static ArrayAdapter<String> adapterMain;
@@ -28,6 +35,9 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mSharedPrefs=getSharedPreferences("Login", 0);
+
         forumsListView = (ListView)findViewById(R.id.forums_listview);
         adapterMain = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
         forumsListView.setAdapter(adapterMain);
@@ -51,9 +61,7 @@ public class MainActivity extends AppCompatActivity
 
    static public void stringToListView(String input,ArrayList<String> list)
     {
-        String find = "<br />";
-        if(input.contains(find))
-            input = input.substring(input.lastIndexOf(find)+find.length());
+        input = removeHtmlChars(input);
 
         input = input.replace("\n", "");
         input =  input.replace("\"","");
@@ -64,7 +72,14 @@ public class MainActivity extends AppCompatActivity
 
         for (int i = 0; i < test.length; i++)
             list.add(test[i]);
+    }
 
+    public static String removeHtmlChars(String input)
+    {
+        String find = "<br />";
+        if(input.contains(find))
+            input = input.substring(input.lastIndexOf(find)+find.length());
+        return input;
     }
 
 
@@ -77,16 +92,41 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        Intent intent;
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.preferences:
-                Intent intent = new Intent(this, PreferencesActivity.class);
+                intent = new Intent(this, PreferencesActivity.class);
                 startActivity(intent);
+                return true;
+            case R.id.login:
+                intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.logout:
+                mSharedEditor.putString("Username","");
+                mSharedEditor.putBoolean("LoggedIn",false);
+                mSharedEditor.commit();
+                makeToast(this,"Successfully logged out");
+                return true;
+            case R.id.check_login:
+                if(mSharedPrefs.getBoolean("LoggedIn",false))
+                    Log.d("Response","You are logged in");
+                else
+                    Log.d("Response","No log in");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public static void makeToast(Context activityContext,String message)
+    {
+        Toast mToast = Toast.makeText(activityContext, message, Toast.LENGTH_LONG);
+        mToast.show();
+
     }
 
 

@@ -20,4 +20,8 @@
         android:title="@string/register"
         app:showAsAction="never"/>
 
+    <item android:id="@+id/check_login"
+        android:title="Check login"
+        app:showAsAction="never"/>
+
 </menu>

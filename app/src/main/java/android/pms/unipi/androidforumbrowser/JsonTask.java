@@ -18,6 +18,7 @@ import static android.pms.unipi.androidforumbrowser.MainActivity.stringToListVie
 
 public class JsonTask extends AsyncTask<String, String, String>
 {
+    String logout;
 
     protected void onPreExecute() {
         super.onPreExecute();
@@ -26,6 +27,8 @@ public class JsonTask extends AsyncTask<String, String, String>
 
     protected String doInBackground(String... params) {
 
+        if (params.length == 2)
+                logout = params[1];
 
         HttpURLConnection connection = null;
         BufferedReader reader = null;
@@ -69,7 +72,7 @@ public class JsonTask extends AsyncTask<String, String, String>
 
     @Override
     protected void onPostExecute(String result) {
-        if(result!=null)
+        if(result!=null && logout == null)
         {
             stringToListView(result,listItems);
             adapterMain.notifyDataSetChanged();

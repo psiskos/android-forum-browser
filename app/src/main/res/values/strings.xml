@@ -11,4 +11,7 @@
     <string name="topics_per_page">Topics per page:  </string>
     <string name="save_button">Save</string>
     <string name="topics">Topics</string>
+    <string name="title_activity_login">Sign in</string>
+
+
 </resources>

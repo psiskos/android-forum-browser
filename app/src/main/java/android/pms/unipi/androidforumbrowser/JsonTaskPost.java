@@ -15,8 +15,13 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static android.pms.unipi.androidforumbrowser.LoginActivity.serverMessageTxv;
+import static android.pms.unipi.androidforumbrowser.MainActivity.LOGIN_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.POSTS_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.TOPICS_ACTIVITY;
+import static android.pms.unipi.androidforumbrowser.MainActivity.mSharedEditor;
+import static android.pms.unipi.androidforumbrowser.MainActivity.mSharedPrefs;
+import static android.pms.unipi.androidforumbrowser.MainActivity.removeHtmlChars;
 import static android.pms.unipi.androidforumbrowser.MainActivity.stringToListView;
 import static android.pms.unipi.androidforumbrowser.PostsActivity.adapterPosts;
 import static android.pms.unipi.androidforumbrowser.PostsActivity.postsListItems;
@@ -28,6 +33,7 @@ public class JsonTaskPost extends AsyncTask<String, String, String>
 {
     String message = null;
     String callingActivity;
+    String usernameSharedPrefs;
 
     protected void onPreExecute() {
         super.onPreExecute();
@@ -40,13 +46,14 @@ public class JsonTaskPost extends AsyncTask<String, String, String>
         HttpURLConnection connection = null;
         BufferedReader reader = null;
         OutputStream outStream = null;
+        usernameSharedPrefs = params[1];
         callingActivity = params[3];
 
         try {
             URL url = new URL(params[0]);
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("forum_name", params[1]);
-            jsonObject.put("number_of_topics", params[2]);
+            jsonObject.put("username", params[1]);
+            jsonObject.put("password", params[2]);
 
             if(callingActivity.equals(TOPICS_ACTIVITY))
             {
@@ -119,6 +126,24 @@ public class JsonTaskPost extends AsyncTask<String, String, String>
             {
                 stringToListView(result,postsListItems);
                 adapterPosts.notifyDataSetChanged();
+            }
+            else if(callingActivity.equals(LOGIN_ACTIVITY))
+            {
+                result = removeHtmlChars(result);
+                serverMessageTxv.setText(result);
+                mSharedEditor = mSharedPrefs.edit();
+                if (result.contains("You are logged in"))
+                {
+                    mSharedEditor.putString("Username",usernameSharedPrefs);
+                    mSharedEditor.putBoolean("LoggedIn",true);
+                    mSharedEditor.commit();
+                }
+                else
+                {
+                    mSharedEditor.putString("Username","");
+                    mSharedEditor.putBoolean("LoggedIn",false);
+                    mSharedEditor.commit();
+                }
             }
 
         }
