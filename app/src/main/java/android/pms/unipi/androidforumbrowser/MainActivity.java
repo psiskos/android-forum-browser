@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity
     public static final String POSTS_ACTIVITY = "POSTS";
     public static final String LOGIN_ACTIVITY = "LOGIN";
     public static final String REGISTER_ACTIVITY = "REGISTER";
+    public static final String NEWTOPIC_ACTIVITY = "NEWTOPIC";
     public static SharedPreferences mSharedPrefs;
     public static SharedPreferences.Editor mSharedEditor;
 
@@ -88,6 +89,13 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
+
+        MenuItem topicItem = menu.findItem(R.id.new_topic);
+        topicItem.setVisible(false);
+        MenuItem postItem = menu.findItem(R.id.new_post);
+        postItem.setVisible(false);
+        invalidateOptionsMenu();
+
         return true;
 
     }

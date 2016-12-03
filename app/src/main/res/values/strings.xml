@@ -13,6 +13,9 @@
     <string name="topics">Topics</string>
     <string name="posts_activity_label">Posts</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="new_topic">New Topic</string>
+    <string name="new_post">New Post</string>
+    <string name="confirm">Confirm</string>
 
 
 </resources>

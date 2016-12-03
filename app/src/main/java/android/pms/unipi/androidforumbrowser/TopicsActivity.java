@@ -61,6 +61,11 @@ public class TopicsActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
+
+        MenuItem postItem = menu.findItem(R.id.new_post);
+        postItem.setVisible(false);
+        invalidateOptionsMenu();
+
         return true;
 
     }
@@ -90,6 +95,11 @@ public class TopicsActivity extends AppCompatActivity
                 return true;
             case R.id.register:
                 intent = new Intent(this, RegisterActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.new_topic:
+                intent = new Intent(this, NewTopicActivity.class);
+                intent.putExtra("FORUM_NAME", forum_name);
                 startActivity(intent);
                 return true;
             case R.id.check_login:

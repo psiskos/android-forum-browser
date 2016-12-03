@@ -36,12 +36,16 @@
         <activity
             android:name=".TopicsActivity"
             android:label="@string/topics" />
-        <activity android:name=".PostsActivity"
-            android:label="@string/posts_activity_label"/>
-        <activity android:name=".LoginActivity"
-            android:label="@string/title_activity_login"/>
-        <activity android:name=".RegisterActivity"
-            android:label="@string/register"/>
+        <activity
+            android:name=".PostsActivity"
+            android:label="@string/posts_activity_label" />
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name=".RegisterActivity"
+            android:label="@string/register" />
+        <activity android:name=".NewTopicActivity"></activity>
     </application>
 
 </manifest>

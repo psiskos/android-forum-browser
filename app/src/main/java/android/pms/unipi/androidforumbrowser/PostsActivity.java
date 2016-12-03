@@ -46,6 +46,9 @@ public class PostsActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
+        MenuItem topicItem = menu.findItem(R.id.new_topic);
+        topicItem.setVisible(false);
+        invalidateOptionsMenu();
         return true;
 
     }

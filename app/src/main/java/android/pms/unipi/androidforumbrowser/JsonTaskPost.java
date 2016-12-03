@@ -17,6 +17,7 @@ import java.net.URL;
 
 import static android.pms.unipi.androidforumbrowser.LoginActivity.serverMessageTxv;
 import static android.pms.unipi.androidforumbrowser.MainActivity.LOGIN_ACTIVITY;
+import static android.pms.unipi.androidforumbrowser.MainActivity.NEWTOPIC_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.POSTS_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.REGISTER_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.TOPICS_ACTIVITY;
@@ -72,6 +73,12 @@ public class JsonTaskPost extends AsyncTask<String, String, String>
                 jsonObject.put("password", params[2]);
                 jsonObject.put("email", params[4]);
             }
+            else if(callingActivity.equals(NEWTOPIC_ACTIVITY))
+            {
+                jsonObject.put("forum_name", params[1]);
+                jsonObject.put("topic_title", params[2]);
+                jsonObject.put("username", params[4]);
+            }
             message = jsonObject.toString();
 
             connection = (HttpURLConnection) url.openConnection();
@@ -121,7 +128,8 @@ public class JsonTaskPost extends AsyncTask<String, String, String>
     }
 
     @Override
-    protected void onPostExecute(String result) {
+    protected void onPostExecute(String result)
+    {
         if(result!=null)
         {
             if(callingActivity.equals(TOPICS_ACTIVITY))

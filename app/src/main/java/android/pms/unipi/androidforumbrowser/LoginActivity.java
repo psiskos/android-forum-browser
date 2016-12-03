@@ -49,6 +49,13 @@ public class LoginActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
+
+        MenuItem topicItem = menu.findItem(R.id.new_topic);
+        topicItem.setVisible(false);
+        MenuItem postItem = menu.findItem(R.id.new_post);
+        postItem.setVisible(false);
+        invalidateOptionsMenu();
+
         return true;
 
     }

@@ -42,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity
             public void onClick(View v) {
 
                 String url = serverUrl + "register.php";
-                if (usernameEditTxv.getText().toString()!="" && passwordEditTxv.getText().toString()!="")
+                if (!usernameEditTxv.getText().toString().matches("") && !passwordEditTxv.getText().toString().matches(""))
                 {
                     new JsonTaskPost().execute(url,usernameEditTxv.getText().toString()
                             ,passwordEditTxv.getText().toString()
@@ -61,6 +61,13 @@ public class RegisterActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
+
+        MenuItem topicItem = menu.findItem(R.id.new_topic);
+        topicItem.setVisible(false);
+        MenuItem postItem = menu.findItem(R.id.new_post);
+        postItem.setVisible(false);
+        invalidateOptionsMenu();
+
         return true;
 
     }
