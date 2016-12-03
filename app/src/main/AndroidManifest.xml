@@ -45,7 +45,11 @@
         <activity
             android:name=".RegisterActivity"
             android:label="@string/register" />
-        <activity android:name=".NewTopicActivity"></activity>
+        <activity android:name=".NewTopicActivity"
+            android:label="Create Topic"/>
+        <activity android:name=".NewPostActivity"
+            android:label="Create Post">
+        </activity>
     </application>
 
 </manifest>

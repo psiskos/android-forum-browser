@@ -3,7 +3,6 @@ package android.pms.unipi.androidforumbrowser;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -13,13 +12,12 @@ import java.util.ArrayList;
 
 import static android.pms.unipi.androidforumbrowser.MainActivity.POSTS_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.mSharedEditor;
-import static android.pms.unipi.androidforumbrowser.MainActivity.mSharedPrefs;
 import static android.pms.unipi.androidforumbrowser.MainActivity.makeToast;
 import static android.pms.unipi.androidforumbrowser.MainActivity.serverUrl;
 
 public class PostsActivity extends AppCompatActivity
 {
-    String topic_name;
+    String topic_name,forum_name;
     static ArrayList<String> postsListItems=new ArrayList<String>();;
     static ArrayAdapter<String> adapterPosts = null;
     ListView postsListView = null;
@@ -36,6 +34,8 @@ public class PostsActivity extends AppCompatActivity
         postsListView.setAdapter(adapterPosts);
 
         topic_name = getIntent().getExtras().getString("TOPIC_NAME");
+        forum_name = getIntent().getExtras().getString("FORUM_NAME");
+
         postsUrl = serverUrl +"fetch_posts.php";
         String postsToRequest = Integer.toString(PreferencesActivity.numOfPosts);
 
@@ -80,11 +80,11 @@ public class PostsActivity extends AppCompatActivity
                 intent = new Intent(this, RegisterActivity.class);
                 startActivity(intent);
                 return true;
-            case R.id.check_login:
-                if(mSharedPrefs.getBoolean("LoggedIn",false))
-                    Log.d("Response","You are logged in");
-                else
-                    Log.d("Response","No log in");
+            case R.id.new_post:
+                intent = new Intent(this, NewPostActivity.class);
+                intent.putExtra("TOPIC_NAME",topic_name);
+                intent.putExtra("FORUM_NAME",forum_name);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

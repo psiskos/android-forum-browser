@@ -13,7 +13,7 @@ import static android.pms.unipi.androidforumbrowser.MainActivity.serverUrl;
 
 public class PreferencesActivity extends AppCompatActivity
 {
-    public static int numOfTopics=3;
+    public static int numOfTopics=5;
     public static int numOfPosts=5;
 
     Integer[] numbers = new Integer[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};

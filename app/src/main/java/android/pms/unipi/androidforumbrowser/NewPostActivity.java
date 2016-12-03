@@ -6,27 +6,31 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import static android.pms.unipi.androidforumbrowser.MainActivity.NEWTOPIC_ACTIVITY;
+import static android.pms.unipi.androidforumbrowser.MainActivity.NEWPOST_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.mSharedPrefs;
 import static android.pms.unipi.androidforumbrowser.MainActivity.makeToast;
 import static android.pms.unipi.androidforumbrowser.MainActivity.serverUrl;
 
-public class NewTopicActivity extends AppCompatActivity
+public class NewPostActivity extends AppCompatActivity
 {
-    String forum_name;
-    EditText topicNameEditTxv;
+    //  params that will be sent to AsynckTask JsonTaskPost
+    String topic_name,forum_name,postText;
+    EditText postTextEditTxv;
     String url;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_topic);
+        setContentView(R.layout.activity_new_post);
 
-        topicNameEditTxv = (EditText)findViewById(R.id.new_topic_editText);
-        Button confirmButton = (Button)findViewById(R.id.confirm_button);
+        postTextEditTxv = (EditText)findViewById(R.id.post_text);
+        Button confirmButton = (Button)findViewById(R.id.confirm_button_post);
 
+        topic_name = getIntent().getExtras().getString("TOPIC_NAME");
         forum_name = getIntent().getExtras().getString("FORUM_NAME");
-        url = serverUrl + "new_topic.php";
+        postText = postTextEditTxv.getText().toString();
+        url = serverUrl + "new_post.php";
 
         confirmButton.setOnClickListener(new View.OnClickListener()
         {
@@ -35,20 +39,21 @@ public class NewTopicActivity extends AppCompatActivity
             {
                 if(!mSharedPrefs.getBoolean("LoggedIn",false))
                 {
-                    MainActivity.makeToast(NewTopicActivity.this,"Loggin required");
+                    makeToast(NewPostActivity.this,"Login required");
                 }
-                else if(topicNameEditTxv.getText().toString().matches(""))
+                else if(postTextEditTxv.getText().toString().matches(""))
                 {
-                    MainActivity.makeToast(NewTopicActivity.this,"Insert Topic Name");
+                    makeToast(NewPostActivity.this,"Empty post message");
                 }
                 else
                 {
                     new JsonTaskPost().execute(url,
+                            topic_name,
+                            postText,
+                            NEWPOST_ACTIVITY,
                             forum_name,
-                            topicNameEditTxv.getText().toString(),
-                            NEWTOPIC_ACTIVITY,
                             mSharedPrefs.getString("Username",null));
-                    makeToast(NewTopicActivity.this,"Topic Created");
+                    makeToast(NewPostActivity.this,"Post Created");
                 }
 
             }

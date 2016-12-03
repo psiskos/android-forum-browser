@@ -3,7 +3,6 @@ package android.pms.unipi.androidforumbrowser;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 
 import static android.pms.unipi.androidforumbrowser.MainActivity.REGISTER_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.mSharedEditor;
-import static android.pms.unipi.androidforumbrowser.MainActivity.mSharedPrefs;
 import static android.pms.unipi.androidforumbrowser.MainActivity.makeToast;
 import static android.pms.unipi.androidforumbrowser.MainActivity.serverUrl;
 
@@ -48,6 +46,7 @@ public class RegisterActivity extends AppCompatActivity
                             ,passwordEditTxv.getText().toString()
                             ,REGISTER_ACTIVITY
                             ,emailEditTxv.getText().toString());
+                    makeToast(RegisterActivity.this,"You are registered"+usernameEditTxv.getText().toString());
                 }
                 else
                 {
@@ -95,12 +94,6 @@ public class RegisterActivity extends AppCompatActivity
                     mSharedEditor.commit();
                 }
                 makeToast(this, "Successfully logged out");
-                return true;
-            case R.id.check_login:
-                if(mSharedPrefs.getBoolean("LoggedIn",false))
-                    Log.d("Response","You are logged in");
-                else
-                    Log.d("Response","No log in");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

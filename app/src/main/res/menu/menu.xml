@@ -20,10 +20,6 @@
         android:title="@string/register"
         app:showAsAction="never"/>
 
-    <item android:id="@+id/check_login"
-        android:title="Check login"
-        app:showAsAction="never"/>
-
     <item android:id="@+id/new_topic"
         android:title="@string/new_topic"
         app:showAsAction="never"/>

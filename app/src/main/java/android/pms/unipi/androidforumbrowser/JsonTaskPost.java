@@ -17,6 +17,7 @@ import java.net.URL;
 
 import static android.pms.unipi.androidforumbrowser.LoginActivity.serverMessageTxv;
 import static android.pms.unipi.androidforumbrowser.MainActivity.LOGIN_ACTIVITY;
+import static android.pms.unipi.androidforumbrowser.MainActivity.NEWPOST_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.NEWTOPIC_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.POSTS_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.REGISTER_ACTIVITY;
@@ -78,6 +79,13 @@ public class JsonTaskPost extends AsyncTask<String, String, String>
                 jsonObject.put("forum_name", params[1]);
                 jsonObject.put("topic_title", params[2]);
                 jsonObject.put("username", params[4]);
+            }
+            else if(callingActivity.equals(NEWPOST_ACTIVITY))
+            {
+                jsonObject.put("topic_name", params[1]);
+                jsonObject.put("forum_name", params[4]);
+                jsonObject.put("username", params[5]);
+                jsonObject.put("post_text", params[2]);
             }
             message = jsonObject.toString();
 

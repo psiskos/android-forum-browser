@@ -3,7 +3,6 @@ package android.pms.unipi.androidforumbrowser;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 
 import static android.pms.unipi.androidforumbrowser.MainActivity.TOPICS_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.mSharedEditor;
-import static android.pms.unipi.androidforumbrowser.MainActivity.mSharedPrefs;
 import static android.pms.unipi.androidforumbrowser.MainActivity.makeToast;
 import static android.pms.unipi.androidforumbrowser.MainActivity.serverUrl;
 
@@ -52,6 +50,7 @@ public class TopicsActivity extends AppCompatActivity
                 Intent intent = new Intent(TopicsActivity.this, PostsActivity.class);
                 String message = topicsListView.getItemAtPosition(position).toString();
                 intent.putExtra("TOPIC_NAME", message);
+                intent.putExtra("FORUM_NAME", forum_name);
                 startActivity(intent);
             }
         });
@@ -101,12 +100,6 @@ public class TopicsActivity extends AppCompatActivity
                 intent = new Intent(this, NewTopicActivity.class);
                 intent.putExtra("FORUM_NAME", forum_name);
                 startActivity(intent);
-                return true;
-            case R.id.check_login:
-                if(mSharedPrefs.getBoolean("LoggedIn",false))
-                    Log.d("Response","You are logged in");
-                else
-                    Log.d("Response","No log in");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

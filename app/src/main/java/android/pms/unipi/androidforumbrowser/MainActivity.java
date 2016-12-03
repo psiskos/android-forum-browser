@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +24,8 @@ public class MainActivity extends AppCompatActivity
     public static final String LOGIN_ACTIVITY = "LOGIN";
     public static final String REGISTER_ACTIVITY = "REGISTER";
     public static final String NEWTOPIC_ACTIVITY = "NEWTOPIC";
+    public static final String NEWPOST_ACTIVITY = "NEWPOST";
+
     public static SharedPreferences mSharedPrefs;
     public static SharedPreferences.Editor mSharedEditor;
 
@@ -126,12 +127,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.register:
                 intent = new Intent(this, RegisterActivity.class);
                 startActivity(intent);
-                return true;
-            case R.id.check_login:
-                if(mSharedPrefs.getBoolean("LoggedIn",false))
-                    Log.d("Response","You are logged in");
-                else
-                    Log.d("Response","No log in");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
