@@ -46,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity
                             ,passwordEditTxv.getText().toString()
                             ,REGISTER_ACTIVITY
                             ,emailEditTxv.getText().toString());
-                    makeToast(RegisterActivity.this,"You are registered"+usernameEditTxv.getText().toString());
+                    makeToast(RegisterActivity.this,"You are registered "+usernameEditTxv.getText().toString());
                 }
                 else
                 {

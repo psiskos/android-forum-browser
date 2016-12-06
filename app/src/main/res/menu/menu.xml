@@ -28,4 +28,8 @@
         android:title="@string/new_post"
         app:showAsAction="never"/>
 
+    <item android:id="@+id/map"
+        android:title="@string/title_activity_maps"
+        app:showAsAction="never"/>
+
 </menu>

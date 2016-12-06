@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity
     public static final String REGISTER_ACTIVITY = "REGISTER";
     public static final String NEWTOPIC_ACTIVITY = "NEWTOPIC";
     public static final String NEWPOST_ACTIVITY = "NEWPOST";
+    public static final String MAPS_ACTIVITY = "MAPS";
 
     public static SharedPreferences mSharedPrefs;
     public static SharedPreferences.Editor mSharedEditor;
@@ -39,7 +40,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //initialization to avoid crashes if user tries logout first
         mSharedPrefs=getSharedPreferences("Login", 0);
+        mSharedEditor = mSharedPrefs.edit();
 
         forumsListView = (ListView)findViewById(R.id.forums_listview);
         adapterMain = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
@@ -58,9 +61,9 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+
     }
-
-
 
    static public void stringToListView(String input,ArrayList<String> list)
     {
@@ -87,7 +90,8 @@ public class MainActivity extends AppCompatActivity
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
 
@@ -98,7 +102,6 @@ public class MainActivity extends AppCompatActivity
         invalidateOptionsMenu();
 
         return true;
-
     }
 
     @Override
@@ -106,7 +109,8 @@ public class MainActivity extends AppCompatActivity
     {
         Intent intent;
         // Handle item selection
-        switch (item.getItemId()) {
+        switch (item.getItemId())
+        {
             case R.id.preferences:
                 intent = new Intent(this, PreferencesActivity.class);
                 startActivity(intent);
@@ -121,12 +125,21 @@ public class MainActivity extends AppCompatActivity
                     mSharedEditor.putString("Username", "");
                     mSharedEditor.putBoolean("LoggedIn", false);
                     mSharedEditor.commit();
+                    makeToast(this, "Successfully logged out");
                 }
-                makeToast(this, "Successfully logged out");
                 return true;
             case R.id.register:
                 intent = new Intent(this, RegisterActivity.class);
                 startActivity(intent);
+                return true;
+            case R.id.map:
+                if(!mSharedPrefs.getBoolean("LoggedIn",false))
+                    MainActivity.makeToast(this,"Loggin required");
+                else
+                {
+                    intent = new Intent(this, MapsActivity.class);
+                    startActivity(intent);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -139,8 +152,4 @@ public class MainActivity extends AppCompatActivity
         mToast.show();
 
     }
-
-
-
-
 }

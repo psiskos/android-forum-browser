@@ -16,6 +16,8 @@
     <string name="new_topic">New Topic</string>
     <string name="new_post">New Post</string>
     <string name="confirm">Confirm</string>
-
+    <string name="title_activity_maps">Map</string>
+    <string name="get_location">Send Location</string>
+    <string name="search_users">Search Users</string>
 
 </resources>

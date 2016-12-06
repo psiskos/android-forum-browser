@@ -35,7 +35,7 @@ public class NewTopicActivity extends AppCompatActivity
             {
                 if(!mSharedPrefs.getBoolean("LoggedIn",false))
                 {
-                    MainActivity.makeToast(NewTopicActivity.this,"Loggin required");
+                    MainActivity.makeToast(NewTopicActivity.this,"Login required");
                 }
                 else if(topicNameEditTxv.getText().toString().matches(""))
                 {

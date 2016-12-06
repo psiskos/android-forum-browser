@@ -17,6 +17,7 @@ import java.net.URL;
 
 import static android.pms.unipi.androidforumbrowser.LoginActivity.serverMessageTxv;
 import static android.pms.unipi.androidforumbrowser.MainActivity.LOGIN_ACTIVITY;
+import static android.pms.unipi.androidforumbrowser.MainActivity.MAPS_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.NEWPOST_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.NEWTOPIC_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.POSTS_ACTIVITY;
@@ -35,8 +36,9 @@ import static android.pms.unipi.androidforumbrowser.TopicsActivity.topicsListIte
 public class JsonTaskPost extends AsyncTask<String, String, String>
 {
     String message = null;
-    String callingActivity;
     String usernameSharedPrefs;
+    String callingActivity;
+    JSONObject jsonObject;
 
     protected void onPreExecute() {
         super.onPreExecute();
@@ -49,45 +51,14 @@ public class JsonTaskPost extends AsyncTask<String, String, String>
         HttpURLConnection connection = null;
         BufferedReader reader = null;
         OutputStream outStream = null;
-        usernameSharedPrefs = params[1];
         callingActivity = params[3];
+        usernameSharedPrefs = params[1];
 
         try {
             URL url = new URL(params[0]);
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("username", params[1]);
-            jsonObject.put("password", params[2]);
 
-            if(callingActivity.equals(TOPICS_ACTIVITY))
-            {
-                jsonObject.put("forum_name", params[1]);
-                jsonObject.put("number_of_topics", params[2]);
-            }
-            else if(callingActivity.equals(POSTS_ACTIVITY))
-            {
-                jsonObject.put("topic_name", params[1]);
-                jsonObject.put("number_of_posts", params[2]);
-            }
-            else if(callingActivity.equals(REGISTER_ACTIVITY))
-            {
-                jsonObject.put("username", params[1]);
-                jsonObject.put("password", params[2]);
-                jsonObject.put("email", params[4]);
-            }
-            else if(callingActivity.equals(NEWTOPIC_ACTIVITY))
-            {
-                jsonObject.put("forum_name", params[1]);
-                jsonObject.put("topic_title", params[2]);
-                jsonObject.put("username", params[4]);
-            }
-            else if(callingActivity.equals(NEWPOST_ACTIVITY))
-            {
-                jsonObject.put("topic_name", params[1]);
-                jsonObject.put("forum_name", params[4]);
-                jsonObject.put("username", params[5]);
-                jsonObject.put("post_text", params[2]);
-            }
-            message = jsonObject.toString();
+            jsonObject = new JSONObject();
+            message = paramsTojson(params).toString();
 
             connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
@@ -97,7 +68,6 @@ public class JsonTaskPost extends AsyncTask<String, String, String>
 
             outStream = new BufferedOutputStream(connection.getOutputStream());
             outStream.write(message.getBytes());
-            //outStream.flush();
             outStream.close();
 
             InputStream stream = connection.getInputStream();
@@ -109,14 +79,11 @@ public class JsonTaskPost extends AsyncTask<String, String, String>
             while ((line = reader.readLine()) != null) {
                 buffer.append(line+"\n");
                 Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
-
             }
             return buffer.toString();
 
 
-        } catch (org.json.JSONException e){
-            e.printStackTrace();
-        }catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
@@ -172,4 +139,45 @@ public class JsonTaskPost extends AsyncTask<String, String, String>
         }
         super.onPostExecute(result);
     }
+        protected JSONObject paramsTojson(String... params)
+        {
+            try
+            {
+                if (params[3].equals(LOGIN_ACTIVITY)) {
+                    jsonObject.put("username", params[1]);
+                    jsonObject.put("password", params[2]);
+                } else if (params[3].equals(TOPICS_ACTIVITY)) {
+                    jsonObject.put("forum_name", params[1]);
+                    jsonObject.put("number_of_topics", params[2]);
+                } else if (params[3].equals(POSTS_ACTIVITY)) {
+                    jsonObject.put("topic_name", params[1]);
+                    jsonObject.put("number_of_posts", params[2]);
+                } else if (params[3].equals(REGISTER_ACTIVITY)) {
+                    jsonObject.put("username", params[1]);
+                    jsonObject.put("password", params[2]);
+                    jsonObject.put("email", params[4]);
+                } else if (params[3].equals(NEWTOPIC_ACTIVITY)) {
+                    jsonObject.put("forum_name", params[1]);
+                    jsonObject.put("topic_title", params[2]);
+                    jsonObject.put("username", params[4]);
+                } else if (params[3].equals(NEWPOST_ACTIVITY)) {
+                    jsonObject.put("topic_name", params[1]);
+                    jsonObject.put("forum_name", params[4]);
+                    jsonObject.put("username", params[5]);
+                    jsonObject.put("post_text", params[2]);
+                }
+                else if (params[3].equals(MAPS_ACTIVITY)) {
+                    jsonObject.put("username", params[1]);
+                    jsonObject.put("timestamp", params[2]);
+                    jsonObject.put("longitude", params[4]);
+                    jsonObject.put("latitude", params[5]);
+                }
+            }
+            catch (org.json.JSONException e)
+            {
+                e.printStackTrace();
+            }
+            return jsonObject;
+        }
+
 }

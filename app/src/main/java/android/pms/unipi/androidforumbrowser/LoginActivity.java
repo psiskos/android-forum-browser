@@ -38,7 +38,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String url = serverUrl + "login.php";
-                new JsonTaskPost().execute(url,usernameEditTxv.getText().toString(),passwordEditTxv.getText().toString(),LOGIN_ACTIVITY);
+                new JsonTaskPost().execute(url,
+                        usernameEditTxv.getText().toString(),
+                        passwordEditTxv.getText().toString(),
+                        LOGIN_ACTIVITY);
             }
         });
     }

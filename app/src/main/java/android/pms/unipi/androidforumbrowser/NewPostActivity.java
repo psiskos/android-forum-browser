@@ -14,7 +14,7 @@ import static android.pms.unipi.androidforumbrowser.MainActivity.serverUrl;
 public class NewPostActivity extends AppCompatActivity
 {
     //  params that will be sent to AsynckTask JsonTaskPost
-    String topic_name,forum_name,postText;
+    String topic_name,forum_name;
     EditText postTextEditTxv;
     String url;
 
@@ -29,7 +29,6 @@ public class NewPostActivity extends AppCompatActivity
 
         topic_name = getIntent().getExtras().getString("TOPIC_NAME");
         forum_name = getIntent().getExtras().getString("FORUM_NAME");
-        postText = postTextEditTxv.getText().toString();
         url = serverUrl + "new_post.php";
 
         confirmButton.setOnClickListener(new View.OnClickListener()
@@ -49,7 +48,7 @@ public class NewPostActivity extends AppCompatActivity
                 {
                     new JsonTaskPost().execute(url,
                             topic_name,
-                            postText,
+                            postTextEditTxv.getText().toString(),
                             NEWPOST_ACTIVITY,
                             forum_name,
                             mSharedPrefs.getString("Username",null));
