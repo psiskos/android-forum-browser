@@ -32,7 +32,7 @@ import static android.pms.unipi.androidforumbrowser.PostsActivity.postsListItems
 import static android.pms.unipi.androidforumbrowser.TopicsActivity.adapterTopics;
 import static android.pms.unipi.androidforumbrowser.TopicsActivity.topicsListItems;
 
-
+//post-get class
 public class JsonTaskPost extends AsyncTask<String, String, String>
 {
     String message = null;
@@ -51,6 +51,7 @@ public class JsonTaskPost extends AsyncTask<String, String, String>
         HttpURLConnection connection = null;
         BufferedReader reader = null;
         OutputStream outStream = null;
+        //on JsonTaskPost string callingActivity is always param[3l
         callingActivity = params[3];
         usernameSharedPrefs = params[1];
 
@@ -78,7 +79,7 @@ public class JsonTaskPost extends AsyncTask<String, String, String>
 
             while ((line = reader.readLine()) != null) {
                 buffer.append(line+"\n");
-                Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
+                Log.d("Response: ", "> " + line);
             }
             return buffer.toString();
 
@@ -87,8 +88,10 @@ public class JsonTaskPost extends AsyncTask<String, String, String>
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (connection != null) {
+        }
+        finally
+        {
+            if (connection != null){
                 connection.disconnect();
             }
             try {

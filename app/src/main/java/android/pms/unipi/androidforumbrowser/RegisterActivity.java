@@ -65,6 +65,10 @@ public class RegisterActivity extends AppCompatActivity
         topicItem.setVisible(false);
         MenuItem postItem = menu.findItem(R.id.new_post);
         postItem.setVisible(false);
+        MenuItem mapItem = menu.findItem(R.id.map);
+        mapItem.setVisible(false);
+        MenuItem registerItem = menu.findItem(R.id.register);
+        registerItem.setVisible(false);
         invalidateOptionsMenu();
 
         return true;
@@ -92,8 +96,8 @@ public class RegisterActivity extends AppCompatActivity
                     mSharedEditor.putString("Username", "");
                     mSharedEditor.putBoolean("LoggedIn", false);
                     mSharedEditor.commit();
+                    makeToast(this, "Successfully logged out");
                 }
-                makeToast(this, "Successfully logged out");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
 {
+    public static final String MAIN_ACTIVITY ="MAIN";
     public static final String TOPICS_ACTIVITY ="TOPICS";
     public static final String POSTS_ACTIVITY = "POSTS";
     public static final String LOGIN_ACTIVITY = "LOGIN";
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity
         adapterMain = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
         forumsListView.setAdapter(adapterMain);
 
-        new JsonTask().execute(serverUrl+"fetch_forums.php");
+        new JsonTask().execute(serverUrl+"fetch_forums.php",MAIN_ACTIVITY);
 
         forumsListView.setOnItemClickListener(new OnItemClickListener()
         {
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity
             list.add(test[i]);
     }
 
+    //finds last occurance of <br /> and returns the part after occurance
     public static String removeHtmlChars(String input)
     {
         String find = "<br />";
@@ -98,6 +100,8 @@ public class MainActivity extends AppCompatActivity
         MenuItem topicItem = menu.findItem(R.id.new_topic);
         topicItem.setVisible(false);
         MenuItem postItem = menu.findItem(R.id.new_post);
+        postItem.setVisible(false);
+        MenuItem mapItem = menu.findItem(R.id.map);
         postItem.setVisible(false);
         invalidateOptionsMenu();
 

@@ -11,27 +11,29 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static android.pms.unipi.androidforumbrowser.MainActivity.MAIN_ACTIVITY;
+import static android.pms.unipi.androidforumbrowser.MainActivity.MAPS_ACTIVITY;
 import static android.pms.unipi.androidforumbrowser.MainActivity.adapterMain;
 import static android.pms.unipi.androidforumbrowser.MainActivity.listItems;
+import static android.pms.unipi.androidforumbrowser.MainActivity.mSharedPrefs;
 import static android.pms.unipi.androidforumbrowser.MainActivity.stringToListView;
+import static android.pms.unipi.androidforumbrowser.MapsActivity.mMap;
 
-
+//get-only request class
 public class JsonTask extends AsyncTask<String, String, String>
 {
-    String logout;
+    String callingActivity;
 
     protected void onPreExecute() {
         super.onPreExecute();
-
     }
 
     protected String doInBackground(String... params) {
 
-        if (params.length == 2)
-                logout = params[1];
-
         HttpURLConnection connection = null;
         BufferedReader reader = null;
+        //on JsonTask string callingActivity is always param[1l
+        callingActivity = params[1];
 
         try {
             URL url = new URL(params[0]);
@@ -45,7 +47,7 @@ public class JsonTask extends AsyncTask<String, String, String>
 
             while ((line = reader.readLine()) != null) {
                 buffer.append(line+"\n");
-                Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
+                Log.d("Response: ", "> " + line);
 
             }
             return buffer.toString();
@@ -71,11 +73,17 @@ public class JsonTask extends AsyncTask<String, String, String>
     }
 
     @Override
-    protected void onPostExecute(String result) {
-        if(result!=null && logout == null)
+    protected void onPostExecute(String result)
+    {
+        if(result!=null)
         {
-            stringToListView(result,listItems);
-            adapterMain.notifyDataSetChanged();
+            if(callingActivity.equals(MAIN_ACTIVITY))
+            {
+                stringToListView(result,listItems);
+                adapterMain.notifyDataSetChanged();
+            }
+            else if(callingActivity.equals(MAPS_ACTIVITY))
+                MapsActivity.addMapPin(result,mSharedPrefs.getString("Username",null),mMap);
         }
         super.onPostExecute(result);
     }

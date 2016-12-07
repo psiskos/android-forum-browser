@@ -48,6 +48,8 @@ public class PostsActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.menu, menu);
         MenuItem topicItem = menu.findItem(R.id.new_topic);
         topicItem.setVisible(false);
+        MenuItem mapItem = menu.findItem(R.id.map);
+        mapItem.setVisible(false);
         invalidateOptionsMenu();
         return true;
 
@@ -73,8 +75,8 @@ public class PostsActivity extends AppCompatActivity
                     mSharedEditor.putString("Username", "");
                     mSharedEditor.putBoolean("LoggedIn", false);
                     mSharedEditor.commit();
+                    makeToast(this, "Successfully logged out");
                 }
-                makeToast(this, "Successfully logged out");
                 return true;
             case R.id.register:
                 intent = new Intent(this, RegisterActivity.class);

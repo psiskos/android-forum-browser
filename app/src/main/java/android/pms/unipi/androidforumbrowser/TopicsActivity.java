@@ -63,6 +63,8 @@ public class TopicsActivity extends AppCompatActivity
 
         MenuItem postItem = menu.findItem(R.id.new_post);
         postItem.setVisible(false);
+        MenuItem mapItem = menu.findItem(R.id.map);
+        mapItem.setVisible(false);
         invalidateOptionsMenu();
 
         return true;
@@ -89,8 +91,8 @@ public class TopicsActivity extends AppCompatActivity
                     mSharedEditor.putString("Username", "");
                     mSharedEditor.putBoolean("LoggedIn", false);
                     mSharedEditor.commit();
+                    makeToast(this, "Successfully logged out");
                 }
-                makeToast(this, "Successfully logged out");
                 return true;
             case R.id.register:
                 intent = new Intent(this, RegisterActivity.class);

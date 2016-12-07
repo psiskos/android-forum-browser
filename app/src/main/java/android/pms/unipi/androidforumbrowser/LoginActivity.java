@@ -55,6 +55,10 @@ public class LoginActivity extends AppCompatActivity {
         topicItem.setVisible(false);
         MenuItem postItem = menu.findItem(R.id.new_post);
         postItem.setVisible(false);
+        MenuItem mapItem = menu.findItem(R.id.map);
+        mapItem.setVisible(false);
+        MenuItem loginItem = menu.findItem(R.id.login);
+        loginItem.setVisible(false);
         invalidateOptionsMenu();
 
         return true;
@@ -77,8 +81,8 @@ public class LoginActivity extends AppCompatActivity {
                     mSharedEditor.putString("Username", "");
                     mSharedEditor.putBoolean("LoggedIn", false);
                     mSharedEditor.commit();
+                    makeToast(this, "Successfully logged out");
                 }
-                makeToast(this, "Successfully logged out");
                 return true;
             case R.id.register:
                 intent = new Intent(this, RegisterActivity.class);
